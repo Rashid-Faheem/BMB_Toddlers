@@ -2,18 +2,23 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import LoadingForm from "@/app/loading"
 
 export default function Dashboard() {
   const [session, setSession] = useState<any>(null)
   const router = useRouter()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     const savedSession = localStorage.getItem("session")
     if (!savedSession) router.push("/login")
     else setSession(JSON.parse(savedSession))
+    setLoading(false)
   }, [])
 
-  if (!session) return <div>Loading...</div>
+  if (loading) return <LoadingForm /> //<div>Loading...</div>
+if (!session) return <div>Loading...</div>
 
   return (
     // <div>
