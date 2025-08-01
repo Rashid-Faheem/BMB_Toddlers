@@ -3,7 +3,7 @@
 import { columns as getColumns } from "./columns"
 import React, { useCallback, useEffect, useState } from 'react'
 import LoadingForm from '@/app/loading'
-import { CategoryMaster } from '@/generated/prisma'
+import { CategoryMaster } from "@prisma/client"
 import Link from 'next/link'
 import { DataTable } from '@/components/ui/data-table'
 import { fetchCategoryMaster } from "@/app/actions/fetch"

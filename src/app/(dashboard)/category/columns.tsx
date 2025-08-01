@@ -5,8 +5,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import ActionButtons from "@/components/action-buttons/ActionButtons"
 import clsx from "clsx"
 import { Switch } from "@/components/ui/switch"
-import { CategoryMaster } from "@/generated/prisma"
-
+import { CategoryMaster } from "@prisma/client"
 
 export const columns = (onDeleteSuccess: () => void): ColumnDef<CategoryMaster>[] => [
   {

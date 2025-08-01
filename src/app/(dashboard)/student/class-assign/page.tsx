@@ -13,7 +13,7 @@ import {
 } from "@/app/actions/fetch";
 import { Button } from "@/components/ui/button";
 import LoadingForm from "@/app/loading";
-import { Student } from "@/generated/prisma";
+import { Student } from  "@prisma/client"
 
 const formSchema = z.object({
   student_id: z.coerce.number().min(1, "Select Student"),
