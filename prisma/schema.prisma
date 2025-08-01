@@ -1,0 +1,115 @@
+// generator client {
+//   provider = "prisma-client-js"
+//   output   = "../src/generated/prisma"
+// }
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(USER)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SessionMaster {
+  id            Int            @id @default(autoincrement())
+  sessionName   String         @unique
+  startDate     DateTime
+  endDate       DateTime
+  active        Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  paymentMonths PaymentMonth[]
+  students      Student[]
+  StudentClass  StudentClass[]
+}
+
+model ClassMaster {
+  id           Int            @id @default(autoincrement())
+  class_name   String         @unique
+  active       Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  students     Student[]
+  StudentClass StudentClass[]
+}
+
+model Student {
+  id           Int            @id @default(autoincrement())
+  name         String
+  fname        String
+  mname        String?
+  sex          UserSex
+  address      String?
+  dob          DateTime?
+  contactno    String
+  active       Boolean        @default(true)
+  donation     Boolean        @default(false)
+  fcnic        String?
+  mcnic        String?
+  session_id   Int?
+  class_id     Int?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  class_       ClassMaster?   @relation(fields: [class_id], references: [id])
+  session      SessionMaster? @relation(fields: [session_id], references: [id])
+  StudentClass StudentClass[]
+}
+
+model PaymentMonth {
+  id         Int            @id @default(autoincrement())
+  month_name String         @unique
+  date       DateTime
+  active     Boolean        @default(true)
+  session_id Int?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  session    SessionMaster? @relation(fields: [session_id], references: [id])
+}
+
+model StudentClass {
+  id         Int           @id @default(autoincrement())
+  student_id Int
+  class_id   Int
+  session_id Int
+  section    String        @default("A")
+  active     Boolean       @default(true)
+  feeAmt     Float         @default(0.0)
+  passed     Boolean       @default(false)
+  remarks    String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  student    Student       @relation(fields: [student_id], references: [id])
+  class_     ClassMaster   @relation(fields: [class_id], references: [id])
+  session    SessionMaster @relation(fields: [session_id], references: [id])
+}
+
+model CategoryMaster {
+  id        Int      @id @default(autoincrement())
+  category  String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserSex {
+  MALE
+  FEMALE
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
